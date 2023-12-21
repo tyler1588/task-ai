@@ -1,11 +1,5 @@
 import { auth } from "@clerk/nextjs";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
-export async function GET(request: Request) {
-  const tasks = await prisma.task.findMany();
-  return Response.json({ tasks });
-}
+import prisma from "@/lib/prisma/prisma";
 
 export async function POST(request: Request) {
   const body = await request.json();

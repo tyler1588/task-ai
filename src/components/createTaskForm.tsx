@@ -25,27 +25,51 @@ export default function CreateTaskForm() {
     setTitle("");
     setContent("");
     router.refresh();
+    (document.getElementById("my_modal_3") as HTMLDialogElement).close();
   };
 
   return (
-    <form className="flex flex-col gap-3 border-2 border-slate-500 w-52 m-auto">
-      <label>Title</label>
-      <input
-        type="text"
-        className="border-2"
-        value={title}
-        onChange={(e) => handleTitleChange(e)}
-      ></input>
-      <label>Content</label>
-      <input
-        type="text"
-        className="border-2"
-        value={content}
-        onChange={(e) => handleContentChange(e)}
-      ></input>
-      <button className="border-2" onClick={(e) => handleSubmit(e)}>
-        Submit
-      </button>
-    </form>
+    <dialog id="my_modal_3" className="modal">
+      <div className="modal-box">
+        <form method="dialog">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <h3 className="font-bold text-lg">Add Task</h3>
+        <form>
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text">Title</span>
+            </div>
+            <input
+              type="text"
+              placeholder="Type here"
+              className="input input-bordered w-full max-w-xs"
+              value={title}
+              onChange={(e) => handleTitleChange(e)}
+            />
+          </label>
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text">Content</span>
+            </div>
+            <input
+              type="text"
+              placeholder="Type here"
+              className="input input-bordered w-full max-w-xs"
+              value={content}
+              onChange={(e) => handleContentChange(e)}
+            />
+          </label>
+          <button
+            className="btn btn-secondary mt-3"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </dialog>
   );
 }
