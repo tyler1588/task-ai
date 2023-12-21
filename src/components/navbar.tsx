@@ -1,29 +1,31 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
-import { useRef } from "react";
 
 export default function NavBar() {
-  const myModal = useRef<HTMLDialogElement>(null);
   return (
     <div className="navbar bg-base-100 shadow">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">Task.ai</a>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
           <button
-            className="btn btn-secondary"
+            className="btn btn-neutral"
             onClick={() =>
               (
-                document.getElementById("my_modal_3") as HTMLDialogElement
+                document.getElementById("category-modal") as HTMLDialogElement
               ).showModal()
             }
           >
-            Add task
+            Add Category
           </button>
         </div>
-        <UserButton />
+        <UserButton
+          appearance={{
+            elements: { avatarBox: { width: "3rem", height: "3rem" } },
+          }}
+        />
       </div>
     </div>
   );

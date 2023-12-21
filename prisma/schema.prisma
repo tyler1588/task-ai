@@ -10,11 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Task {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  content   String?
   userId    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tasks     Task[]
+}
+
+model Task {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  content    String?
+  userId     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?   @db.ObjectId
 }
