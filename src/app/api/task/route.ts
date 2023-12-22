@@ -29,14 +29,17 @@ export async function POST(request: Request) {
       return Response.json("missing user ID", { status: 400 });
     }
 
-    const task: { title: string; content: string; userId: string } = {
-      title: body.title,
-      content: body.content,
-      userId: userId,
-    };
+    console.log(body);
 
     const newTask = await prisma.task.create({
-      data: task,
+      data: {
+        title: body.title,
+        content: body.content,
+        userId,
+        Category: {
+          connect: { id: body.categoryID },
+        },
+      },
     });
 
     return Response.json(newTask, { status: 201 });

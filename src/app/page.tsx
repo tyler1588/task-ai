@@ -10,7 +10,6 @@ export default async function Home() {
       <NavBar />
       <CreateCategoryForm />
       <CategoryContainer />
-      <CreateTaskForm />
     </main>
   );
 }

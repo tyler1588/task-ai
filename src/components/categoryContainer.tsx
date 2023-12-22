@@ -1,10 +1,12 @@
-import { useState } from "react";
 import Category from "./category";
-import Task from "./task";
 import prisma from "@/lib/prisma/prisma";
 
 export default async function CategoryContainer() {
-  const allCategories = await prisma.category.findMany({});
+  const allCategories = await prisma.category.findMany({
+    include: {
+      tasks: true,
+    },
+  });
 
   return (
     <div className="p-5  bg-neutral-content  w-11/12 h-5/6 m-auto mt-5 rounded-lg">

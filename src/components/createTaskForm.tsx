@@ -1,10 +1,15 @@
-"use client";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function CreateTaskForm(categoryID: string) {
+type CreateTaskFormProps = {
+  visible: boolean;
+  disableVisibility: () => void;
+  categoryID: string;
+};
+
+export default function CreateTaskForm(props: CreateTaskFormProps) {
   const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const router = useRouter();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,10 +17,19 @@ export default function CreateTaskForm(categoryID: string) {
     setTitle(e.target.value);
   };
 
+  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setContent(e.target.value);
+  };
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const data = { title: title };
-    const newCategory = await fetch("/api/category", {
+    const data = {
+      title: title,
+      content: content,
+      categoryID: props.categoryID,
+    };
+    const newCategory = await fetch("/api/task", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -26,13 +40,18 @@ export default function CreateTaskForm(categoryID: string) {
   };
 
   return (
-    <dialog id="task-modal" className="modal">
+    <dialog
+      id="task-modal"
+      className="modal"
+      open={props.visible ? true : false}
+    >
       <div className="modal-box">
-        <form method="dialog">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-            ✕
-          </button>
-        </form>
+        <button
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          onClick={props.disableVisibility}
+        >
+          ✕
+        </button>
         <h3 className="font-bold text-lg">Add Task</h3>
         <form>
           <label className="form-control w-full max-w-xs">
@@ -55,8 +74,8 @@ export default function CreateTaskForm(categoryID: string) {
               type="text"
               placeholder="Type here"
               className="input input-bordered w-full max-w-xs"
-              value={title}
-              onChange={(e) => handleTitleChange(e)}
+              value={content}
+              onChange={(e) => handleContentChange(e)}
             />
           </label>
           <button
