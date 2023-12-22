@@ -1,40 +1,43 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 type CreateTaskFormProps = {
   visible: boolean;
   disableVisibility: () => void;
   categoryID: string;
+  selectedTask: { id: string; title: string; content: string; userId: string };
+  handleTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleContentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function CreateTaskForm(props: CreateTaskFormProps) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const router = useRouter();
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setTitle(e.target.value);
-  };
-
-  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setContent(e.target.value);
-  };
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const data = {
-      title: title,
-      content: content,
-      categoryID: props.categoryID,
-    };
-    const newTask = await fetch("/api/task", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    setTitle("");
-    setContent("");
+
+    if (props.selectedTask.id === "") {
+      const data = {
+        title: props.selectedTask.title,
+        content: props.selectedTask.content,
+        categoryID: props.categoryID,
+      };
+
+      await fetch("/api/task", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+    } else {
+      const data = {
+        id: props.selectedTask.id,
+        title: props.selectedTask.title,
+        content: props.selectedTask.content,
+        userId: props.selectedTask.userId,
+      };
+      await fetch("/api/task", {
+        method: "PUT",
+        body: JSON.stringify(data),
+      });
+    }
     router.refresh();
     props.disableVisibility();
   };
@@ -51,7 +54,9 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
               ✕
             </button>
           </div>
-          <h3 className="font-bold text-xl">Add Task</h3>
+          <h3 className="font-bold text-xl">
+            {props.selectedTask.id ? "Update Task" : "Add Task"}
+          </h3>
           <form className="flex flex-col gap-3 mt-3">
             <label className="form-control w-full max-w-xs">
               <div className="label">
@@ -61,8 +66,8 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
                 type="text"
                 placeholder="Type here"
                 className="w-full border p-1 rounded"
-                value={title}
-                onChange={(e) => handleTitleChange(e)}
+                value={props.selectedTask.title}
+                onChange={(e) => props.handleTitleChange(e)}
               />
             </label>
             <label className="form-control w-full max-w-xs">
@@ -73,8 +78,8 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
                 type="text"
                 placeholder="Type here"
                 className="w-full border p-1 rounded"
-                value={content}
-                onChange={(e) => handleContentChange(e)}
+                value={props.selectedTask.content}
+                onChange={(e) => props.handleContentChange(e)}
               />
             </label>
             <button

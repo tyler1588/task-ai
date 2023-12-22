@@ -20,9 +20,9 @@ export default async function CategoryContainer() {
   });
 
   return (
-    <div className="m-auto flex flex-col h-[calc(100vh_-_64px_-_40px)] gap-3 pt-8 pb-3">
+    <div className="m-auto flex flex-col h-[calc(100vh_-_64px)] gap-3 p-5">
       <AddCategoryBtn />
-      <div className="flex overflow-x-scroll h-[calc(100vh_-_64px_-_40px_-_40px_-_16px)] gap-3">
+      <div className="flex overflow-x-scroll h-[calc(100vh_-_64px_-_16px)] gap-3">
         {allCategories.map((category) => (
           <Category
             key={category.id}

@@ -45,3 +45,29 @@ export async function POST(request: Request) {
     return Response.json("error", { status: 400 });
   }
 }
+
+export async function PUT(request: Request) {
+  const body = await request.json();
+
+  try {
+    const { userId }: { userId: string | null } = auth();
+
+    if (userId !== body.userId) {
+      return Response.json("Not authorized", { status: 400 });
+    }
+
+    const updatedtask = await prisma.task.update({
+      where: {
+        id: body.id,
+      },
+      data: {
+        title: body.title,
+        content: body.content,
+      },
+    });
+
+    return Response.json(updatedtask, { status: 201 });
+  } catch (error) {
+    return Response.json("error", { status: 400 });
+  }
+}
