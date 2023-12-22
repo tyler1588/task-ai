@@ -3,14 +3,32 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateTaskForm from "./createTaskForm";
+import Task from "./task";
+
+interface TaskObject {
+  id: string;
+  title: string;
+  content: string | null;
+}
 
 type categoryProps = {
   id: string;
   title: string;
+  tasks: TaskObject[];
 };
 
 export default function Category(props: categoryProps) {
   const router = useRouter();
+
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const id = (e.target as HTMLElement).id;
+    await fetch("/api/category", {
+      method: "DELETE",
+      body: JSON.stringify({ id: id }),
+    });
+    router.refresh();
+  };
 
   const [taskFormVisible, setTaskFormVisible] = useState(false);
 
@@ -25,15 +43,34 @@ export default function Category(props: categoryProps) {
         disableVisibility={disableVisibility}
         categoryID={props.id}
       />
-      <div className="w-96 bg-accent-content rounded-lg p-3">
-        <h2 className="text-neutral-content">{props.title}</h2>
-
-        <div className="form-control">
+      <div className="w-72 rounded-xl cursor-pointer bg-slate-200 shadow bg-opacity-50 h-min max-h-full overflow-y-scroll flex-none p-3">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-bold">{props.title}</h2>
           <button
-            className="btn btn-neutral"
-            onClick={() => setTaskFormVisible(true)}
+            className="w-5 h-5 bg-red-400 flex justify-center items-center text-white shadow rounded-full "
+            id={props.id}
+            onClick={(e) => handleDelete(e)}
           >
-            Add Task
+            x
+          </button>
+        </div>
+        <div className="flex flex-col gap-2 mt-4">
+          {props.tasks.map((task) => (
+            <Task
+              id={task.id}
+              key={task.id}
+              title={task.title}
+              content={task.content}
+            />
+          ))}
+        </div>
+        <div className="flex justify-end mt-3">
+          <button
+            className="w-5 h-5 bg-green-400 flex justify-center items-center text-white shadow rounded-full"
+            id={props.id}
+            onClick={(e) => setTaskFormVisible(true)}
+          >
+            +
           </button>
         </div>
       </div>

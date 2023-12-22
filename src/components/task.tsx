@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 type taskProps = {
   id: string;
   title: string;
-  content: string;
+  content: string | null;
 };
 
 export default function Task(props: taskProps) {
@@ -21,20 +21,15 @@ export default function Task(props: taskProps) {
   };
 
   return (
-    <div className="card w-96 bg-neutral-content">
-      <div className="card-body">
-        <h2 className="card-title">{props.title}</h2>
-        <p>{props.content}</p>
-        <div className="card-actions justify-end">
-          <button
-            className="btn btn-error"
-            id={props.id}
-            onClick={(e) => handleDelete(e)}
-          >
-            Delete
-          </button>
-        </div>
-      </div>
+    <div className="card bg-opacity-70 cursor-pointer hover:bg-slate-300 transition-all bg-slate-100 rounded w-full flex-none flex justify-between p-2">
+      <h2 className="card-title">{props.title}</h2>
+      <button
+        className="w-5 h-5 bg-red-400 flex justify-center items-center text-white shadow rounded-full "
+        id={props.id}
+        onClick={(e) => handleDelete(e)}
+      >
+        x
+      </button>
     </div>
   );
 }

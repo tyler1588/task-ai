@@ -29,62 +29,62 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
       content: content,
       categoryID: props.categoryID,
     };
-    const newCategory = await fetch("/api/task", {
+    const newTask = await fetch("/api/task", {
       method: "POST",
       body: JSON.stringify(data),
     });
-    console.log(newCategory);
     setTitle("");
+    setContent("");
     router.refresh();
-    (document.getElementById("task-modal") as HTMLDialogElement).close();
+    props.disableVisibility();
   };
 
   return (
     <dialog
-      id="task-modal"
-      className="modal"
+      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
       open={props.visible ? true : false}
     >
-      <div className="modal-box">
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={props.disableVisibility}
-        >
-          ✕
-        </button>
-        <h3 className="font-bold text-lg">Add Task</h3>
-        <form>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Name</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              value={title}
-              onChange={(e) => handleTitleChange(e)}
-            />
-          </label>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Content</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              value={content}
-              onChange={(e) => handleContentChange(e)}
-            />
-          </label>
-          <button
-            className="btn btn-neutral mt-3"
-            onClick={(e) => handleSubmit(e)}
-          >
-            Submit
-          </button>
-        </form>
+      <div className="h-full w-full flex">
+        <div className="w-96 p-5 bg-white m-auto rounded-xl">
+          <div className="flex justify-end">
+            <button className="" onClick={props.disableVisibility}>
+              ✕
+            </button>
+          </div>
+          <h3 className="font-bold text-xl">Add Task</h3>
+          <form className="flex flex-col gap-3 mt-3">
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text">Name</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Type here"
+                className="w-full border p-1 rounded"
+                value={title}
+                onChange={(e) => handleTitleChange(e)}
+              />
+            </label>
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text">Content</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Type here"
+                className="w-full border p-1 rounded"
+                value={content}
+                onChange={(e) => handleContentChange(e)}
+              />
+            </label>
+            <button
+              className="bg-slate-500 hover:bg-slate-700 transition-all text-white rounded-xl p-2 w-1/2 m-auto"
+              onClick={(e) => handleSubmit(e)}
+            >
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
     </dialog>
   );

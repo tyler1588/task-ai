@@ -25,3 +25,21 @@ export async function POST(request: Request) {
     return Response.json("error", { status: 400 });
   }
 }
+
+export async function DELETE(request: Request) {
+  const body = await request.json();
+
+  try {
+    const { userId }: { userId: string | null } = auth();
+
+    await prisma.category.delete({
+      where: {
+        id: body.id,
+      },
+    });
+
+    return Response.json({ status: 204 });
+  } catch (error) {
+    return Response.json("error", { status: 400 });
+  }
+}
