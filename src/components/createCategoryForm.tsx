@@ -22,10 +22,11 @@ export default function CreateCategoryForm(props: CreateCategoryFormProps) {
     const data = {
       title: title,
     };
-    const newCategory = await fetch("/api/category", {
+    const response = await fetch("/api/category", {
       method: "POST",
       body: JSON.stringify(data),
     });
+    if (!response.ok) throw Error("Status code: " + response.status);
     setTitle("");
     router.refresh();
     props.disableVisibility();

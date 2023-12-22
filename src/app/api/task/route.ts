@@ -29,6 +29,10 @@ export async function POST(request: Request) {
       return Response.json("missing user ID", { status: 400 });
     }
 
+    if (body.title.length < 1) {
+      return Response.json("Title cannot be empty", { status: 400 });
+    }
+
     const newTask = await prisma.task.create({
       data: {
         title: body.title,

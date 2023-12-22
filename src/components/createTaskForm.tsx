@@ -22,10 +22,12 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
         categoryID: props.categoryID,
       };
 
-      await fetch("/api/task", {
+      const response = await fetch("/api/task", {
         method: "POST",
         body: JSON.stringify(data),
       });
+
+      if (!response.ok) throw Error("Status code: " + response.status);
     } else {
       const data = {
         id: props.selectedTask.id,
@@ -33,10 +35,11 @@ export default function CreateTaskForm(props: CreateTaskFormProps) {
         content: props.selectedTask.content,
         userId: props.selectedTask.userId,
       };
-      await fetch("/api/task", {
+      const response = await fetch("/api/task", {
         method: "PUT",
         body: JSON.stringify(data),
       });
+      if (!response.ok) throw Error("Status code: " + response.status);
     }
     router.refresh();
     props.disableVisibility();
