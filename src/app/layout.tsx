@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import NavBar from "@/components/navbar";
-import CreateTaskForm from "@/components/createCategoryForm";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Task AI",
   description: "A smarter was to manage your tasks.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -19,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" data-theme="cupcake">
+      <html lang="en">
         <body className={inter.className}>{children}</body>
       </html>
     </ClerkProvider>

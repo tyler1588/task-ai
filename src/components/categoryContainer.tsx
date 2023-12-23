@@ -2,11 +2,13 @@ import Category from "./category";
 import prisma from "@/lib/prisma/prisma";
 import { auth } from "@clerk/nextjs";
 import AddCategoryBtn from "./addCategoryBtn";
+import { redirect } from "next/navigation";
 
 export default async function CategoryContainer() {
   const { userId }: { userId: string | null } = auth();
+
   if (!userId) {
-    return 1;
+    redirect("/");
   }
   const allCategories = await prisma.category.findMany({
     where: {

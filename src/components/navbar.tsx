@@ -7,6 +7,7 @@ export default function NavBar() {
         <h1 className="text-xl font-bold">Task.ai</h1>
         <div className="flex gap-2 items-center">
           <UserButton
+            afterSignOutUrl="/"
             appearance={{
               elements: { avatarBox: { width: "3rem", height: "3rem" } },
             }}
