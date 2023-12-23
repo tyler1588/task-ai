@@ -23,7 +23,7 @@ export default function AddCategoryBtn() {
         <div className="w-5 h-5 bg-green-400 flex justify-center items-center text-white shadow rounded-full">
           +
         </div>
-        Add
+        New Category
       </button>
     </>
   );
